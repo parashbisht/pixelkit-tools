@@ -1,50 +1,46 @@
-import { format, formatDistanceToNow, isToday, isTomorrow, parseISO } from "date-fns";
+export function formatBytes(bytes: number, decimals: number = 2): string {
+  if (bytes === 0) return "0 B";
+  if (bytes < 0) return "0 B";
 
-export function formatCurrency(value: number): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: value >= 1000 ? 0 : 2,
-  }).format(value);
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["B", "KB", "MB", "GB"];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const safeIndex = Math.min(i, sizes.length - 1);
+
+  return `${parseFloat((bytes / Math.pow(k, safeIndex)).toFixed(dm))} ${sizes[safeIndex]}`;
 }
 
-export function formatCompactCurrency(value: number): string {
-  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
-  if (value >= 1_000) return `$${(value / 1_000).toFixed(value >= 10_000 ? 0 : 1)}k`;
-  return formatCurrency(value);
+export function formatDimensions(width: number, height: number): string {
+  return `${width.toLocaleString()} × ${height.toLocaleString()} px`;
 }
 
-export function formatDate(iso: string): string {
-  return format(parseISO(iso), "MMM d, yyyy");
-}
+export function calculateSavings(
+  originalBytes: number,
+  newBytes: number,
+): { percentage: number; text: string; isSaved: boolean } {
+  if (originalBytes <= 0) {
+    return { percentage: 0, text: "0%", isSaved: false };
+  }
 
-export function formatShortDate(iso: string): string {
-  const date = parseISO(iso);
-  if (isToday(date)) return "Today";
-  if (isTomorrow(date)) return "Tomorrow";
-  return format(date, "MMM d");
-}
+  const diff = originalBytes - newBytes;
+  const percentage = Math.round((diff / originalBytes) * 100);
 
-export function formatRelative(iso: string): string {
-  return formatDistanceToNow(parseISO(iso), { addSuffix: true });
-}
+  if (diff > 0) {
+    return {
+      percentage,
+      text: `${percentage}% smaller`,
+      isSaved: true,
+    };
+  } else if (diff < 0) {
+    const increase = Math.round((Math.abs(diff) / originalBytes) * 100);
+    return {
+      percentage: -increase,
+      text: `${increase}% larger`,
+      isSaved: false,
+    };
+  }
 
-export function greetingForHour(hour: number): string {
-  if (hour < 12) return "Good morning";
-  if (hour < 18) return "Good afternoon";
-  return "Good evening";
-}
-
-export function initials(name: string): string {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? "")
-    .join("");
-}
-
-export function percent(value: number): string {
-  const sign = value > 0 ? "+" : "";
-  return `${sign}${value.toFixed(1)}%`;
+  return { percentage: 0, text: "No change", isSaved: false };
 }

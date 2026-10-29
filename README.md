@@ -1,68 +1,84 @@
-# ClientFlow
+# PixelKit Tools
 
-A lead tracking dashboard with list and Kanban views, built with Next.js 16 and TypeScript.
+Free, fast, and 100% client-side image utility micro-tools built with Next.js 16 (App Router), React 19, TypeScript, and Tailwind CSS.
 
-## Features
+Compress, resize, and convert images directly in your browser without uploading files to any external server.
 
-- **Dashboard** with KPI cards summarizing lead metrics
-- **Leads list view** with search, filter, and sort
-- **Leads Kanban board** with drag-and-drop between status columns
-- **Lead detail page** with full lead information
-- **Command palette** (Cmd/Ctrl+K) for quick navigation
-- **Responsive design**, works on mobile and desktop
-- Built with **shadcn/ui** components on top of Tailwind CSS
+---
 
-> **Note on scope:** this project currently focuses on lead management and dashboard analytics. Client, task, project, and invoice modules are planned for a future version.
+## ⚡ Core Features
 
-## Tech stack
+### 1. Image Compressor (`/compress`)
+- **Drag-and-Drop & File Picker**: Upload JPEG, PNG, or WebP images instantly.
+- **Interactive Quality Slider**: Tune lossy compression (5% to 100%) with quick presets (90% Best, 75% Balanced, 50% High Saving, 30% Max).
+- **Accurate Byte Calculations**: Genuine size reduction metrics computed directly from output binary Blobs (no simulated figures).
+- **Format Toggle**: Compress as JPEG, WebP, or PNG (lossless).
+- **Instant Download**: One-click download with customized filename.
 
-| Category | Tools |
-|---|---|
-| Framework | Next.js 16 (App Router), React 19 |
-| Language | TypeScript |
-| Styling | Tailwind CSS, shadcn/ui |
-| Forms & validation | React Hook Form, Zod |
-| Charts | Recharts |
-| Dates | date-fns |
-| Icons | lucide-react |
-| State | React Context (see `src/store`) |
+### 2. Image Resizer (`/resize`)
+- **Natural Dimension Probing**: Displays original pixel width and height on upload.
+- **Maintain Aspect Ratio**: Proportional locking toggle; changing width recalculates height automatically and vice versa.
+- **Scale Presets**: Quick shortcuts for 25%, 50%, 75%, and 100% of original dimensions.
+- **Bicubic Canvas Scaling**: Smooth canvas interpolation to prevent pixelation.
+- **Safety Clamping**: Upper dimension limit of 10,000 px to safeguard browser memory.
 
-## Folder structure
+### 3. Image Format Converter (`/convert`)
+- **Format Flexibility**: Seamlessly convert between JPEG (`.jpg`), PNG (`.png`), and WebP (`.webp`).
+- **Transparency Background Handling**: When converting transparent PNG/WebP images to JPEG, users can configure a background fill color (White, Black, Gray, Navy, or custom Hex) to avoid black box artifacts.
+- **Format Honesty**: Clear documentation on why SVG (vector) and animated GIF formats are not included, avoiding accidental rasterization or frame loss.
 
-src/
-├── app/ # Routes: /, /dashboard, /leads, /leads/[id]
-├── components/
-│ ├── common/ # Shared UI: KPI cards, Kanban board, skeletons, status badges
-│ ├── layout/ # App shell, sidebar, topbar, command palette
-│ └── ui/ # shadcn/ui primitives
-├── services/ # Data-fetching logic (leads)
-├── store/ # App-wide React Context state
-├── data/ # In-memory seed data and mock "database"
-├── types/ # Shared TypeScript types
-└── lib/ # Constants and utilities
+### 4. Informational & Legal Pages
+- **Home (`/`)**: Hero, tool cards, workflow overview, privacy guarantee, and responsive ad placement zone.
+- **About (`/about`)**: Architecture overview and client-side processing philosophy.
+- **Contact (`/contact`)**: Support contact form and feedback channels.
+- **Privacy Policy (`/privacy-policy`)**: Detailed zero-upload local processing guarantee.
+- **Terms of Use (`/terms-of-use`)**: Free-to-use licensing and usage guidelines.
+- **SEO Ready**: `robots.txt` and `sitemap.xml` dynamically generated for search crawlers.
 
-## Getting started
+---
 
-Requires Node.js 18 or later.
+## 🔒 Privacy & Architecture
+
+- **100% Client-Side**: All image manipulation is executed in the browser via the HTML5 Canvas 2D API.
+- **Zero Server Uploads**: No backend server, database, or cloud storage is used. Your images never leave your local device.
+- **Memory Safety**: Temporary Object URLs (`blob:`) are actively revoked using `URL.revokeObjectURL()` during resets and page transitions.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16.3.4 (App Router)
+- **UI Library**: React 19.2.8
+- **Language**: TypeScript 5
+- **Styling**: Tailwind CSS v4 + tw-animate-css
+- **Icons**: Lucide React
+- **Toast Notifications**: Sonner
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+ (Node v20 or v22 recommended)
+- npm or pnpm
+
+### Run Locally
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Production Build
 
 ```bash
-git clone https://github.com/parashbisht/clientflow.git
-cd clientflow
-npm install
-npm run dev
+npm run build
+npm run start
 ```
-
-Open [http://localhost:3000](http://localhost:3000). No database or environment variables are required — the app currently runs on in-memory seed data (`src/data/seed.ts`).
-
-## Live demo
-
-Live demo: [link here]
-
-## Future improvements
-
-- Clients module
-- Tasks module
-- Projects module
-- Invoices module
-- Persistent backend and database
-- Authentication

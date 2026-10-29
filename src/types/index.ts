@@ -1,86 +1,43 @@
-export type UserRole =
-  | "Owner"
-  | "Client Partner"
-  | "Project Manager"
-  | "Design Lead"
-  | "Engineer";
+export type SupportedImageFormat = "image/jpeg" | "image/png" | "image/webp";
 
-export type LeadStatus =
-  | "new"
-  | "contacted"
-  | "qualified"
-  | "proposal"
-  | "won"
-  | "lost";
+export type ImageFormatExtension = "jpg" | "jpeg" | "png" | "webp";
 
-export type LeadSource =
-  | "Referral"
-  | "Website"
-  | "LinkedIn"
-  | "Conference"
-  | "Inbound"
-  | "Partner";
-
-export type ActivityType = "lead_created";
-
-export interface TeamMember {
-  id: string;
+export interface ImageFileDetails {
+  file: File;
   name: string;
-  email: string;
-  role: UserRole;
-  title: string;
-  initials: string;
-  color: string;
+  size: number;
+  type: string;
+  width: number;
+  height: number;
+  objectUrl: string;
 }
 
-export interface Note {
-  id: string;
-  body: string;
-  authorId: string;
-  createdAt: string;
+export interface CompressionOptions {
+  quality: number; // 0.05 to 1.0
+  format?: SupportedImageFormat;
 }
 
-export interface TimelineEvent {
-  id: string;
-  title: string;
-  detail: string;
-  createdAt: string;
-  authorId?: string;
+export interface ResizeOptions {
+  width: number;
+  height: number;
+  maintainAspectRatio: boolean;
+  format?: SupportedImageFormat;
+  quality?: number;
 }
 
-export interface Lead {
-  id: string;
-  company: string;
-  contactName: string;
-  email: string;
-  phone: string;
-  source: LeadSource;
-  status: LeadStatus;
-  value: number;
-  assigneeId: string;
-  lastActivityAt: string;
-  createdAt: string;
-  website: string;
-  industry: string;
-  notes: Note[];
-  timeline: TimelineEvent[];
-  messages: { id: string; subject: string; preview: string; createdAt: string }[];
+export interface ConversionOptions {
+  targetFormat: SupportedImageFormat;
+  quality?: number;
+  backgroundColor?: string; // For transparent backgrounds when converting to JPEG (e.g. #FFFFFF)
 }
 
-export interface Activity {
-  id: string;
-  type: ActivityType;
-  title: string;
-  detail: string;
-  createdAt: string;
-  actorId: string;
-  entityType?: "lead";
-  entityId?: string;
-}
-
-export interface AppDatabase {
-  currentUserId: string;
-  team: TeamMember[];
-  leads: Lead[];
-  activities: Activity[];
+export interface ProcessedImageResult {
+  blob: Blob;
+  objectUrl: string;
+  width: number;
+  height: number;
+  size: number;
+  format: SupportedImageFormat;
+  savingsPercentage: number;
+  fileName: string;
 }

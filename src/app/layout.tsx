@@ -1,5 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,18 +15,50 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "ClientFlow",
-  description: "A focused workspace for managing leads.",
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export const metadata: Metadata = {
+  title: {
+    template: "%s | PixelKit Tools",
+    default: "PixelKit Tools - Free Client-Side Image Utilities",
+  },
+  description:
+    "Compress, resize, and convert images directly in your browser. Fast, private, and 100% client-side with zero server uploads.",
+  keywords: [
+    "image compressor",
+    "image resizer",
+    "image converter",
+    "webp to jpeg",
+    "png to jpeg",
+    "browser image tools",
+    "client-side image optimization",
+  ],
+  authors: [{ name: "PixelKit Tools" }],
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-screen flex-col bg-background text-foreground">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
+        <Toaster position="bottom-right" />
+      </body>
     </html>
   );
 }
