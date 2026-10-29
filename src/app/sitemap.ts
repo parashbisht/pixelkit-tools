@@ -1,7 +1,8 @@
+
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://pixelkit.tools";
+  const baseUrl = "https://pixelkitz.vercel.app";
   const routes = [
     "",
     "/compress",
@@ -33,4 +34,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   });
 }
-
