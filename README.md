@@ -59,7 +59,7 @@ Compress, resize, and convert images directly in your browser without uploading 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ (Node v20 or v22 recommended)
+- Node.js 20.9+ (Node v22 recommended)
 - npm or pnpm
 
 ### Run Locally

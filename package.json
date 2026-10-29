@@ -2,6 +2,12 @@
   "name": "pixelkit-tools",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "allowScripts": {
+    "unrs-resolver": true
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
